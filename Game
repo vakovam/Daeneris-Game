@@ -1,0 +1,312 @@
+from random import randint
+from random import choice
+
+def dacuzarupl1a():
+    player1zar=randint(1,6)
+    return player1zar
+def dacuzarupl2a():
+    player2zar=randint(1,6)
+    return player2zar
+def dacuzarupl3a():
+    player3zar=randint(1,6)
+    return player3zar
+def pl3randomizator():
+    dacuzarupl1 = dacuzarupl1a()
+    dacuzarupl2 = dacuzarupl2a()
+    dacuzarupl3 = dacuzarupl3a()
+    while dacuzarupl1==dacuzarupl2==dacuzarupl3 or dacuzarupl1==dacuzarupl2 or dacuzarupl1==dacuzarupl3 or dacuzarupl2==dacuzarupl3:
+        while dacuzarupl1==dacuzarupl2==dacuzarupl3:
+            dacuzarupl1 = dacuzarupl1a()
+            dacuzarupl2 = dacuzarupl2a()
+            dacuzarupl3 = dacuzarupl3a()
+        while dacuzarupl1==dacuzarupl2:
+            dacuzarupl1 = dacuzarupl1a()
+            dacuzarupl2 = dacuzarupl2a()
+        while dacuzarupl1==dacuzarupl3:
+            dacuzarupl1 = dacuzarupl1a()
+            dacuzarupl3 = dacuzarupl3a()
+        while dacuzarupl2==dacuzarupl3:
+            dacuzarupl2 = dacuzarupl2a()
+            dacuzarupl3 = dacuzarupl3a()
+    if dacuzarupl1>dacuzarupl2:
+        if dacuzarupl1>dacuzarupl3:
+            if dacuzarupl2>dacuzarupl3:
+                return("Player 1 starts.\nPlayer 2 follows.")
+            elif dacuzarupl2<dacuzarupl3:
+                return("Player 1 starts.\nPlayer 3 follows.")
+    if dacuzarupl2>dacuzarupl1:
+        if dacuzarupl2> dacuzarupl3:
+            if dacuzarupl1>dacuzarupl3:
+                return("Player 2 starts.\nPlayer 1 follows.")
+            elif dacuzarupl1<dacuzarupl3:
+                return("Player 2 starts.\nPlayer 3 follows.")
+    if dacuzarupl3>dacuzarupl1:
+        if dacuzarupl3>dacuzarupl2:
+            if dacuzarupl1>dacuzarupl2:
+                return("Player 3 starts.\nPlayer 1 follows.")
+            elif dacuzarupl1<dacuzarupl2:
+                return("Player 3 starts.\nPlayer 2 follows.")
+
+board = 30
+winner=0
+
+points1=int(0)
+points2=int(0)
+points3=int(0)
+
+player1active=1
+player2active=1
+player3active=1
+
+fights1=1
+fights2=1
+fights3=1
+
+player1=""
+player2=""
+player3=""
+
+damagebonus1=int(0)
+damagebonus2=int(0)
+damagebonus3=int(0)
+
+player1hp=int(50)
+player2hp=int(50)
+player3hp=int(50)
+
+p1=input("What is player 1's name? ")
+p2=input("What is player 2's name? ")
+p3=input("What is player 3's name? ")
+
+if pl3randomizator() == "Player 1 starts.\nPlayer 2 follows.":
+    player1=p1
+    player2=p2
+    player3=p3
+    
+elif pl3randomizator() == "Player 1 starts.\nPlayer 3 follows.":
+    player1=p1
+    player3=p2
+    player2=p3
+    
+elif pl3randomizator() == "Player 2 starts.\nPlayer 1 follows.":
+    player2=p1
+    player1=p2
+    player3=p3
+
+elif pl3randomizator() == "Player 2 starts.\nPlayer 3 follows.":
+    player3=p1
+    player1=p2
+    player2=p3
+    
+elif pl3randomizator() == "Player 3 starts.\nPlayer 1 follows.":
+    player2=p1
+    player3=p2
+    player1=p3
+    
+elif pl3randomizator() == "Player 3 starts.\nPlayer 2 follows.":
+    player3=p1
+    player2=p2
+    player1=p3
+
+print(player1+" Starts.\n"+player2+" Follows.\n\n")
+    
+while points1<board+10 or points2<board+10 or points3<board+10:
+    #player1
+    if player1active==1:
+        roll=input("It's "+player1+"'s turn to roll.\nTo roll the dice please type 1 and press enter. ")
+        while roll != "1":
+            print("That's not how you roll the dice.")
+            roll = input("To roll the dice please type 1 and press enter. ")
+        if roll == "1":
+            roll1result = randint(1,6)
+            print("You rolled "+str(roll1result)+"\n\n")
+            points1=points1+roll1result
+            
+    #player2
+    if player2active==1:
+        roll=input("It's "+player2+"'s turn to roll.\nTo roll the dice please type 1 and press enter. ")
+        while roll != "1":
+            print("That's not how you roll the dice.")
+            roll = input("To roll the dice please type 1 and press enter. ")
+        if roll == "1":
+            roll2result = randint(1,6)
+            print("You rolled "+str(roll2result)+"\n\n")
+            points2=points2+roll2result
+            
+    #player3
+    if player3active==1:
+        roll=input("It's "+player3+"'s turn to roll.\nTo roll the dice please type 1 and press enter. ")
+        while roll != "1":
+            print("That's not how you roll the dice.")
+            roll = input("To roll the dice please type 1 and press enter. ")
+        if roll == "1":
+            roll3result = randint(1,6)
+            print("You rolled "+str(roll3result))
+            points3=points3+roll3result
+
+            
+    #battles
+    if fights1==1:
+        if points1==points2:
+            print("\n\n"+player1+" and "+player2+" met eachother, and now they are fighting!")
+            damage1=randint(1,6)
+            damage2=randint(1,6)
+            print(str(player1)+" and "+str(player2)+" fought honorably. But unfortunately, "+str(player1)+" has been pushed "+str(damage2)+" units backwards and "+str(player2)+" has been pushed "+str(damage1)+" units backwards.")
+            points1=points1-damage2
+            points2=points2-damage1
+        if points1==points3:
+            print("\n\n"+player1+" and "+player3+" met eachother, and now they are fighting!")
+            damage1=randint(1,6)
+            damage3=randint(1,6)
+            print(str(player1)+" and "+str(player3)+" fought honorably. But unfortunately, "+str(player1)+" has been pushed "+str(damage3)+" units backwards and "+str(player3)+" has been pushed "+str(damage1)+" units backwards.")
+            points1=points1-damage3
+            points3=points3-damage1
+    if fights2==1:
+        if points2==points3:
+            print("\n\n"+player2+" and "+player3+" met eachother, and now they are fighting!")
+            damage2=randint(1,6)
+            damage3=randint(1,6)
+            print(str(player2)+" and "+str(player3)+" fought honorably. But unfortunately, "+str(player2)+" has been pushed "+str(damage3)+" units backwards and "+str(player3)+" has been pushed "+str(damage2)+" units backwards.")
+            points2=points2-damage3
+            points3=points3-damage2
+    if fights3==1 and fights2==1 and fights3==1:
+        if points1==points2==points3:
+            print("\n\n"+player1+", "+player2+" and "+player3+" met eachother, and now they are fighting!")
+            damage1=randint(1,6)
+            damage2=randint(1,6)
+            damage3=randint(1,6)
+            print("All 3 players fought honorably. But unfortunately, "+player1+" has been pushed "+str(int((damage2+damage3)/2))+" units backwards, "+player2+" has been pushed "+str(int((damage1+damage3)/2))+" units backwards and "+player3+" has been pushed "+str(int((damage1+damage2)/2))+" units backwards.")
+            points1=points1-int((damage2+damage3)/2)
+            points2=points2-int((damage2+damage3)/2)
+            points3=points3-int((damage2+damage3)/2)
+
+
+    if points1<=0:
+        points1=0
+    if points2<=0:
+        points2=0
+    if points3<=0:
+        points3=0
+
+        print("\n\n")
+    if points1<30:
+        print(player1+"'s position is "+str(points1)+". ")
+    elif points1>board:
+        print("Be aware, "+player1+"-san, has reached the battlefield.")
+        player1active=0
+        fights1=0
+    if points2<board:
+        print(player2+"'s position is "+str(points2)+". ")
+    elif points2>board:
+        print("Be aware, "+player2+"-san, has reached the battlefield.")
+        player2active=0
+        fights2=0
+    if points3<board:
+        print(player3+"'s position is "+str(points3)+". \n\n")
+    elif points3>board:
+        print("Be aware, "+player3+"-san, has reached the battlefield.")
+        player3active=0
+        fights3=0
+
+        print("\n\n")
+        
+    if player1active==0 and player2active==1 and player3active==1:
+        damagebonus1=damagebonus1+randint(1,3)
+        print(player1+"'s attack has increased with "+str(damagebonus1))
+        print("\n")
+    
+    if player1active==0 and player2active==0 and player3active==1:
+        damagebonus1=damagebonus1+int(randint(1,4)/2)
+        damagebonus2=damagebonus2+int(randint(1,4)/2)
+        print(player1+"'s attack has increased with "+str(damagebonus1))
+        print(player2+"'s attack has increased with "+str(damagebonus2))
+        print("\n")
+        
+    if player1active==0 and player2active==1 and player3active==0:
+        damagebonus1=damagebonus1+int(randint(1,4)/2)
+        damagebonus3=damagebonus3+int(randint(1,4)/2)
+        print(player1+"'s attack has increased with "+str(damagebonus1))
+        print(player3+"'s attack has increased with "+str(damagebonus3))
+        print("\n")
+        
+    if player1active==1 and player2active==0 and player3active==1:
+        damagebonus2=damagebonus1+randint(1,3)
+        print(player2+"'s attack has increased with "+str(damagebonus2))
+        print("\n")
+        
+    if player1active==1 and player2active==0 and player3active==0:
+        damagebonus2=damagebonus2+int(randint(1,4)/2)
+        damagebonus3=damagebonus3+int(randint(1,4)/2)
+        print(player1+"'s attack has increased with "+str(damagebonus1))
+        print(player3+"'s attack has increased with "+str(damagebonus3))
+        print("\n")
+        
+    if player1active==1 and player2active==1 and player3active==0:
+        damagebonus3=damagebonus3+randint(1,3)
+        print(player3+"'s attack has increased with "+str(damagebonus3))
+        print("\n")
+        
+    if player1active==0 and player2active==0 and player3active==0:
+        print("\nAll 3 ninja masters got to the arena.\nThe ultimate fight has begun!\n\n")
+        readycheck=input("If you are ready to start the ultimate battle press 1 then enter. ")
+        while readycheck != "1":
+            readycheck=input("Take all the time you need, this is an important battle.\nIf you are ready to start the ultimate battle press 1 then enter. ")
+        if readycheck=="1":
+            life1=1
+            life2=1
+            life3=1
+            while life1==1 or life2==1 or life3==1:
+                fbdamage1=randint(1,6)+damagebonus1
+                fbdamage2=randint(1,6)+damagebonus2
+                fbdamage3=randint(1,6)+damagebonus3
+                lifes1=["player2hp", "player3hp"]
+                lifes2=["player1hp", "player3hp"]
+                lifes3=["player1hp", "player2hp"]
+                if life1==1:
+                    target=choice(lifes1)
+                    globals()[target]=globals()[target]-fbdamage1
+                    if target=="player2hp":
+                        playertarget=player2
+                    elif target=="player3hp":
+                        playertarget=player3
+                    print("\n"+player1+" attacked "+playertarget+" and dealt "+str(fbdamage1)+" damage.")
+                if player2hp<=0:
+                    print(player2+" has been terminated.")
+                    life2=0
+                if life2==1:
+                    target=choice(lifes2)
+                    globals()[target]=globals()[target]-fbdamage2
+                    if target=="player1hp":
+                        playertarget=player1
+                    elif target=="player3hp":
+                        playertarget=player3
+                    print("\n"+player2+" attacked "+playertarget+" and dealt "+str(fbdamage2)+" damage.")
+                if player3hp<=0:
+                    print(player3+" has been terminated.")
+                    life3=0
+                if life3==1:
+                    target=choice(lifes3)
+                    globals()[target]=globals()[target]-fbdamage3
+                    if target=="player1hp":
+                        playertarget=player1
+                    elif target=="player2hp":
+                        playertarget=player2
+                    print("\n"+player3+" attacked "+playertarget+" and dealt "+str(fbdamage3)+" damage.")
+                if player1hp<=0:
+                    print(player1+" has been terminated.")
+                    life1=0
+                if life1==1 and life2==0 and life3==0:
+                    print("\n\n"+"Congratulations "+player1+"san, you are the true ninja master!")
+                    winner=1
+                if life1==0 and life2==1 and life3==0:
+                    print("\n\n"+"Congratulations "+player2+"san, you are the true ninja master!")
+                    winner=1
+                if life1==0 and life2==0 and life3==1:
+                    print("\n\n"+"Congratulations "+player3+"san, you are the true ninja master!")
+                    winner=1
+                if winner==1:
+                    break
+            if winner==1:
+                break
+        if winner==1:
+                break
