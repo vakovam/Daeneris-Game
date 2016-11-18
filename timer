@@ -1,0 +1,34 @@
+from tkinter import *
+import time
+
+window = Tk()
+canvas= Canvas(window, height = 600, width = 600, bg= 'white')
+canvas.pack()
+
+seconds = 55
+minutes = 0
+
+
+label1 = Label(window, text = 'time elapsed: ' + str(seconds) +" seconds")
+label1.pack(side=LEFT)
+
+def timer():
+    def timecount():
+        global seconds
+        global minutes
+        seconds = seconds + 1
+        if seconds <59 and minutes == 0:
+            label1.config(text = 'time elapsed: ' + str(seconds) + 'seconds')
+        elif seconds ==59:
+            minutes = minutes + 1
+            seconds = 0
+            label1.config(text = 'time elapsed: ' + str(minutes) + 'minutes ' + str(seconds) + 'seconds')
+        elif seconds <59:
+            label1.config(text = 'time elapsed: ' + str(minutes) + 'minutes ' + str(seconds) + 'seconds')
+        label1.after(1000,timer)
+    timecount()
+
+b = Button(window, text = 'boop', command = timer)
+b.pack(side=LEFT)
+
+mainloop()
