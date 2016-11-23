@@ -28,7 +28,7 @@ def timer():
         label1.after(1000,timer)
     timecount()
 
-b = Button(window, text = 'boop', command = timer)
+b = Button(window, text = 'start', command = timer)
 b.pack(side=LEFT)
 
 mainloop()
