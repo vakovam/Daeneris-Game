@@ -1,42 +1,51 @@
 from tkinter import *
 import random
+
+## declaring variables for the function
 NumWalls = 5
 side = 4
 
+## creating the canvas
 window = Tk()
 canvas = Canvas(window, width=800, height=600, bg='white')
 canvas.pack(padx=10,pady=10)
 
+## creating function to generate the walls
 def WallCreate(x):
     global side
     for i in range(x):
+## generates random length wall coming down from the top
         if side == 4:
+## changes value of variable side so wall generated from new position
             side = side -1
             Obx1 = random.randint(1,400)
             Obx2 = Obx1 + 10
             Oby1 = random.randint(1,300)
             Oby2 = 0
             id1=canvas.create_rectangle(Obx1,Oby1,Obx2,Oby2, fill='blue')
+## generates random length wall coming up from the bottom
         elif side ==3:
+## changes value of variable side so wall generated from new position
             side = side -1
             Obx1 = random.randint(1,400)
             Obx2 = Obx1 + 10
             Oby1 = 600
             Oby2 = random.randint(1,300)
             id2=canvas.create_rectangle(Obx1,Oby1,Obx2,Oby2, fill='blue')
+## generates random length wall coming in from the left
         elif side ==2:
+## changes value of variable side so wall generated from new position
             side = side -1
             Obx1 = 0
             Obx2 = random.randint(1,400)
             Oby1 = random.randint(1,300)
             Oby2 = Oby1-10
             id3=canvas.create_rectangle(Obx1,Oby1,Obx2,Oby2, fill='blue')
+## generates random length wall coming in from the right
         elif side ==1:
-            side = 4
             Obx1 = random.randint(400,800)
             Obx2 = 800
             Oby1 = random.randint(1,300)
             Oby2 = Oby1-10
             id4=canvas.create_rectangle(Obx1,Oby1,Obx2,Oby2, fill='blue')
         
-WallCreate(2)
