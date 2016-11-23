@@ -1,0 +1,43 @@
+from tkinter import *
+
+## declaring and setting the variables for use in the functions
+Reward = False
+Penalty = False
+vx = 10
+vy = 5
+
+## defining the function to assign reward or penalty settings to the program
+def RewardPenalty():
+    global Reward
+    global Penalty
+    global vx
+    global vy
+## detecting if the reward setting is needed to be applied
+    if Reward == True:
+## if reward is applied the speed of the robot is doubled and the background colour is set to yellow
+        vx = vx*2
+        vy = vy*2
+        canvas.config(background = 'yellow')
+## after 2 seconds runs the function NormalSet
+        window.after(200, NormalSet)
+## resetting the variable
+        Reward = False
+## detecting if the penalty setting is needed to be applied
+    if Penalty == True:
+## if penalty is applied the speed is halved and the background colour is changed to red
+        vx = vx/2
+        vy = vy/2
+        canvas.config(background = 'red')
+## after 2 seconds the function NormalSet is run
+        window.after(200, NormalSet)
+## resetting the variable
+        Penalty = False
+
+## defining a function which resets the speed and background colour back to original value
+def NormalSet():
+    global vx
+    global vy
+    vx = 10
+    vy = 5
+    canvas.config(background = 'white')
+    
