@@ -19,7 +19,7 @@ def RewardPenalty():
         vy = vy*2
         canvas.config(background = 'yellow')
 ## after 2 seconds runs the function NormalSet
-        window.after(200, NormalSet)
+        window.after(2000, NormalSet)
 ## resetting the variable
         Reward = False
 ## detecting if the penalty setting is needed to be applied
@@ -29,7 +29,7 @@ def RewardPenalty():
         vy = vy/2
         canvas.config(background = 'red')
 ## after 2 seconds the function NormalSet is run
-        window.after(200, NormalSet)
+        window.after(2000, NormalSet)
 ## resetting the variable
         Penalty = False
 
