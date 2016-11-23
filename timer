@@ -1,33 +1,51 @@
 from tkinter import *
 import time
 
+## creating the canvas
 window = Tk()
 canvas= Canvas(window, height = 600, width = 600, bg= 'white')
 canvas.pack()
 
-seconds = 55
-minutes = 0
+## declaring the variables required
+seconds = 58
+minutes = 1
+on = False
 
-
+## creating a label to display the time
 label1 = Label(window, text = 'time elapsed: ' + str(seconds) +" seconds")
 label1.pack(side=LEFT)
 
-def timer():
-    def timecount():
+## creating a function that updates the second variable and the label
+def timecount():
         global seconds
         global minutes
-        seconds = seconds + 1
-        if seconds <59 and minutes == 0:
-            label1.config(text = 'time elapsed: ' + str(seconds) + 'seconds')
-        elif seconds ==59:
-            minutes = minutes + 1
-            seconds = 0
-            label1.config(text = 'time elapsed: ' + str(minutes) + 'minutes ' + str(seconds) + 'seconds')
-        elif seconds <59:
-            label1.config(text = 'time elapsed: ' + str(minutes) + 'minutes ' + str(seconds) + 'seconds')
-        label1.after(1000,timer)
+## checks if the timer is on or off
+        if on == True:
+## if the timer is on it adds 1 to the seconds variable
+            seconds = seconds + 1
+## if the timer has not reached 1 minute it only displays seconds
+            if seconds <59 and minutes == 0:
+                label1.config(text = 'time elapsed: ' + str(seconds) + 'seconds')
+## if has already passed 1 minute then checks if nearing end of next minute
+## then adds one to the minutes if seconds have reached 59 and resets the seconds to 0
+            elif seconds ==59:
+                minutes = minutes + 1
+                seconds = 0
+                label1.config(text = 'time elapsed: ' + str(minutes) + 'minutes ' + str(seconds) + 'seconds')
+## if the seconds are less than 59 and there are no restraints to do with the minutes variable
+## it updates the label with minutes and seconds labels 
+            elif seconds <59:
+                label1.config(text = 'time elapsed: ' + str(minutes) + 'minutes ' + str(seconds) + 'seconds')
+            label1.after(1000,timecount)
+            
+## defining the function which the button operates, changing the on variable to the opposite when
+## pressed so will not update the label once pressed twice
+def timer():
+    global on
+    on = not(on)
     timecount()
 
+## creating the start and stop button for the timer
 b = Button(window, text = 'start', command = timer)
 b.pack(side=LEFT)
 
