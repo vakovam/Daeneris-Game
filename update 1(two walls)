@@ -17,285 +17,62 @@ x_max = 800.0
 y_max = 600.0
 id1=canvas.create_rectangle(0,0,0+10,0+10) #Robot
 
-# Object coordinates
-# Wall1
-colors=['red','blue','yellow','green','black']
-nrwalls = 4
-col=0
-for i in [1,2,3,4,5]:
-    globals()["Obx"+str(i)+"1"]=randint(0,x_max-50)
-    globals()["Oby"+str(i)+"1"]=randint(0,y_max-50)
-    globals()["Obx"+str(i)+"2"]=globals()["Obx"+str(i)+"1"]+50
-    globals()["Oby"+str(i)+"2"]=globals()["Oby"+str(i)+"1"]+randint(50,y_max+50-300)
-    globals()["id"+str(i+1)]=canvas.create_rectangle(globals()["Obx"+str(i)+"1"], globals()["Oby"+str(i)+"1"], globals()["Obx"+str(i)+"2"], globals()["Oby"+str(i)+"2"], fill=colors[col])
-    col=col+1
-  
-# Move robot for 500 timesteps
-for t in range(1, 50000):
-    x1,y1,x2,y2=canvas.coords(id1)
-    if nrwalls >= 1:
-        Obx11,Oby11,Obx12,Oby12=canvas.coords(id2)
-        if y2 >= Oby11 and x2>Obx11 and x1<Obx12 and y2<Oby11+10:
+
+#Avoid Wall
+def avoid(vx,vy):
+    for i in range(1,globals()["nrwalls"]+1):
+        locals()['Obx'+str(i)+'1'],locals()['Oby'+str(i)+'1'],locals()['Obx'+str(i)+'2'],locals()['Oby'+str(i)+'2']=canvas.coords(globals()['id'+str(i+1)])
+        if y2 >= locals()['Oby'+str(i)+'1'] and x2>locals()['Obx'+str(i)+'1'] and x1<locals()['Obx'+str(i)+'2'] and y2<locals()['Oby'+str(i)+'1']+10:
             vy = -randint(0,90)/90
             if vx<=0:
                 vx=-(1+vy)
             elif vx>=0:
                 vx=(1+vy)
-        if x2>=Obx11 and y1<=Oby12 and x2<Obx11+10 and y2>=Oby11:
+        if x2>=locals()['Obx'+str(i)+'1'] and y1<=locals()['Oby'+str(i)+'2'] and x2<locals()['Obx'+str(i)+'1']+10 and y2>=locals()['Oby'+str(i)+'1']:
             vx = -randint(0,90)/90
             if vy<=0:
                 vy=-(1+vx)
             elif vy>=0:
                 vy=(1+vx)
-        if y1 <= Oby12 and (x1>Obx11 and x2<Obx12) and y1>Oby12-10:
+        if y1 <= locals()['Oby'+str(i)+'2'] and x1>locals()['Obx'+str(i)+'1'] and x2<locals()['Obx'+str(i)+'2'] and y1>locals()['Oby'+str(i)+'2']-10:
             vy = randint(0,90)/90
             if vx<=0:
                 vx=-(1-vy)
             elif vx>=0:
                 vx=(1-vy)
-        if x1<=Obx12 and y1<=Oby12 and y2>=Oby11 and x1>Obx12-10:
+        if x1<=locals()['Obx'+str(i)+'2'] and y1<=locals()['Oby'+str(i)+'2'] and y2>=locals()['Oby'+str(i)+'1'] and x1>locals()['Obx'+str(i)+'2']-10:
             vx = randint(0,90)/90
             if vy<=0:
                 vy=-(1-vx)
             elif vy>=0:
                 vy=(1-vx)
-        if nrwalls >=2:
-            Obx21,Oby21,Obx22,Oby22=canvas.coords(id3)
-            if y2 >= Oby21 and x2>Obx21 and x1<Obx22 and y2<Oby21+10:
-                vy = -randint(0,90)/90
-                if vx<=0:
-                    vx=-(1+vy)
-                elif vx>=0:
-                    vx=(1+vy)
-            if x2>=Obx21 and y1<=Oby22 and x2<Obx21+10 and y2>=Oby21:
-                vx = -randint(0,90)/90
-                if vy<=0:
-                    vy=-(1+vx)
-                elif vy>=0:
-                    vy=(1+vx)
-            if y1 <= Oby22 and (x1>Obx21 and x2<Obx22) and y1>Oby22-10:
-                vy = randint(0,90)/90
-                if vx<=0:
-                    vx=-(1-vy)
-                elif vx>=0:
-                    vx=(1-vy)
-            if x1<=Obx22 and y1<=Oby22 and y2>=Oby21 and x1>Obx22-10:
-                vx = randint(0,90)/90
-                if vy<=0:
-                    vy=-(1-vx)
-                elif vy>=0:
-                    vy=(1-vx)
-            if nrwalls>=3:
-                Obx31,Oby31,Obx32,Oby32=canvas.coords(id4)
-                if y2 >= Oby31 and x2>Obx31 and x1<Obx32 and y2<Oby31+10:
-                    vy = -randint(0,90)/90
-                    if vx<=0:
-                        vx=-(1+vy)
-                    elif vx>=0:
-                        vx=(1+vy)
-                if x2>=Obx31 and y1<=Oby32 and x2<Obx31+10 and y2>=Oby31:
-                    vx = -randint(0,90)/90
-                    if vy<=0:
-                        vy=-(1+vx)
-                    elif vy>=0:
-                        vy=(1+vx)
-                if y1 <= Oby32 and (x1>Obx31 and x2<Obx32) and y1>Oby32-10:
-                    vy = randint(0,90)/90
-                    if vx<=0:
-                        vx=-(1-vy)
-                    elif vx>=0:
-                        vx=(1-vy)
-                if x1<=Obx32 and y1<=Oby32 and y2>=Oby31 and x1>Obx32-10:
-                    vx = randint(0,90)/90
-                    if vy<=0:
-                        vy=-(1-vx)
-                    elif vy>=0:
-                        vy=(1-vx)
-                if nrwalls>=4:
-                    Obx41,Oby41,Obx42,Oby42=canvas.coords(id5)
-                    if y2 >= Oby41 and x2>Obx41 and x1<Obx42 and y2<Oby41+10:
-                        vy = -randint(0,90)/90
-                        if vx<=0:
-                            vx=-(1+vy)
-                        elif vx>=0:
-                            vx=(1+vy)
-                    if x2>=Obx41 and y1<=Oby42 and x2<Obx41+10 and y2>=Oby41:
-                        vx = -randint(0,90)/90
-                        if vy<=0:
-                            vy=-(1+vx)
-                        elif vy>=0:
-                            vy=(1+vx)
-                    if y1 <= Oby42 and (x1>Obx41 and x2<Obx42) and y1>Oby42-10:
-                        vy = randint(0,90)/90
-                        if vx<=0:
-                            vx=-(1-vy)
-                        elif vx>=0:
-                            vx=(1-vy)
-                    if x1<=Obx42 and y1<=Oby42 and y2>=Oby41 and x1>Obx42-10:
-                        vx = randint(0,90)/90
-                        if vy<=0:
-                            vy=-(1-vx)
-                        elif vy>=0:
-                            vy=(1-vx)
-                    ####DOESN@T WORK FROM HERE ON.(idk why)
-                    if nrwalls>=5:
-                        Obx51,Oby51,Obx52,Oby52=canvas.coords(id6)
-                        if y2 >= Oby51 and x2>Obx51 and x1<Obx52 and y2<Oby51+10:
-                            vy = -randint(0,90)/90
-                            if vx<=0:
-                                vx=-(1+vy)
-                            elif vx>=0:
-                                vx=(1+vy)
-                        if x2>=Obx51 and y1<=Oby52 and x2<Obx51+10 and y2>=Oby51:
-                            vx = -randint(0,90)/90
-                            if vy<=0:
-                                vy=-(1+vx)
-                            elif vy>=0:
-                                vy=(1+vx)
-                        if y1 <= Oby52 and (x1>Obx51 and x2<Obx52) and y1>Oby52-10:
-                            vy = randint(0,90)/90
-                            if vx<=0:
-                                vx=-(1-vy)
-                            elif vx>=0:
-                                vx=(1-vy)
-                        if x1<=Obx52 and y1<=Oby52 and y2>=Oby51 and x1>Obx52-10:
-                            vx = randint(0,90)/90
-                            if vy<=0:
-                                vy=-(1-vx)
-                            elif vy>=0:
-                                vy=(1-vx)
-                        if nrwalls>=6:
-                            Obx61,Oby61,Obx62,Oby62=canvas.coords(id7)
-                            if y2 >= Oby61 and x2>Obx61 and x1<Obx62 and y2<Oby61+10:
-                                vy = -randint(0,90)/90
-                                if vx<=0:
-                                    vx=-(1+vy)
-                                elif vx>=0:
-                                    vx=(1+vy)
-                            if x2>=Obx61 and y1<=Oby62 and x2<Obx61+10 and y2>=Oby61:
-                                vx = -randint(0,90)/90
-                                if vy<=0:
-                                    vy=-(1+vx)
-                                elif vy>=0:
-                                    vy=(1+vx)
-                            if y1 <= Oby62 and (x1>Obx61 and x2<Obx62) and y1>Oby62-10:
-                                vy = randint(0,90)/90
-                                if vx<=0:
-                                    vx=-(1-vy)
-                                elif vx>=0:
-                                    vx=(1-vy)
-                            if x1<=Obx62 and y1<=Oby62 and y2>=Oby61 and x1>Obx62-10:
-                                vx = randint(0,90)/90
-                                if vy<=0:
-                                    vy=-(1-vx)
-                                elif vy>=0:
-                                    vy=(1-vx)
-                            if nrwalls>=7:
-                                Obx71,Oby71,Obx72,Oby72=canvas.coords(id8)
-                                if y2 >= Oby71 and x2>Obx71 and x1<Obx72 and y2<Oby71+10:
-                                    vy = -randint(0,90)/90
-                                    if vx<=0:
-                                        vx=-(1+vy)
-                                    elif vx>=0:
-                                        vx=(1+vy)
-                                if x2>=Obx71 and y1<=Oby72 and x2<Obx71+10 and y2>=Oby71:
-                                    vx = -randint(0,90)/90
-                                    if vy<=0:
-                                        vy=-(1+vx)
-                                    elif vy>=0:
-                                        vy=(1+vx)
-                                if y1 <= Oby72 and (x1>Obx71 and x2<Obx72) and y1>Oby72-10:
-                                    vy = randint(0,90)/90
-                                    if vx<=0:
-                                        vx=-(1-vy)
-                                    elif vx>=0:
-                                        vx=(1-vy)
-                                if x1<=Obx72 and y1<=Oby72 and y2>=Oby71 and x1>Obx72-10:
-                                    vx = randint(0,90)/90
-                                    if vy<=0:
-                                        vy=-(1-vx)
-                                    elif vy>=0:
-                                        vy=(1-vx)
-                                if nrwalls>=8:
-                                    Obx81,Oby81,Obx82,Oby82=canvas.coords(id9)
-                                    if y2 >= Oby81 and x2>Obx81 and x1<Obx82 and y2<Oby81+10:
-                                        vy = -randint(0,90)/90
-                                        if vx<=0:
-                                            vx=-(1+vy)
-                                        elif vx>=0:
-                                            vx=(1+vy)
-                                    if x2>=Obx81 and y1<=Oby82 and x2<Obx81+10 and y2>=Oby81:
-                                        vx = -randint(0,90)/90
-                                        if vy<=0:
-                                            vy=-(1+vx)
-                                        elif vy>=0:
-                                            vy=(1+vx)
-                                    if y1 <= Oby82 and (x1>Obx81 and x2<Obx82) and y1>Oby82-10:
-                                        vy = randint(0,90)/90
-                                        if vx<=0:
-                                            vx=-(1-vy)
-                                        elif vx>=0:
-                                            vx=(1-vy)
-                                    if x1<=Obx82 and y1<=Oby82 and y2>=Oby81 and x1>Obx82-10:
-                                        vx = randint(0,90)/90
-                                        if vy<=0:
-                                            vy=-(1-vx)
-                                        elif vy>=0:
-                                            vy=(1-vx)
-                                    
-                                    if nrwalls>=9:
-                                        Obx91,Oby91,Obx92,Oby92=canvas.coords(id10)
-                                        if y2 >= Oby91 and x2>Obx91 and x1<Obx92 and y2<Oby91+10:
-                                            vy = -randint(0,90)/90
-                                            if vx<=0:
-                                                vx=-(1+vy)
-                                            elif vx>=0:
-                                                vx=(1+vy)
-                                        if x2>=Obx91 and y1<=Oby92 and x2<Obx91+10 and y2>=Oby91:
-                                            vx = -randint(0,90)/90
-                                            if vy<=0:
-                                                vy=-(1+vx)
-                                            elif vy>=0:
-                                                vy=(1+vx)
-                                        if y1 <= Oby92 and (x1>Obx91 and x2<Obx92) and y1>Oby92-10:
-                                            vy = randint(0,90)/90
-                                            if vx<=0:
-                                                vx=-(1-vy)
-                                            elif vx>=0:
-                                                vx=(1-vy)
-                                        if x1<=Obx92 and y1<=Oby92 and y2>=Oby91 and x1>Obx92-10:
-                                            vx = randint(0,90)/90
-                                            if vy<=0:
-                                                vy=-(1-vx)
-                                            elif vy>=0:
-                                                vy=(1-vx)
-                                        if nrwalls==10:
-                                            Obx101,Oby101,Obx102,Oby102=canvas.coords(id11)
-                                            if y2 >= Oby101 and x2>Obx101 and x1<Obx102 and y2<Oby101+10:
-                                                vy = -randint(0,90)/90
-                                                if vx<=0:
-                                                    vx=-(1+vy)
-                                                elif vx>=0:
-                                                    vx=(1+vy)
-                                            if x2>=Obx101 and y1<=Oby102 and x2<Obx101+10 and y2>=Oby101:
-                                                vx = -randint(0,90)/90
-                                                if vy<=0:
-                                                    vy=-(1+vx)
-                                                elif vy>=0:
-                                                    vy=(1+vx)
-                                            if y1 <= Oby102 and (x1>Obx101 and x2<Obx102) and y1>Oby102-10:
-                                                vy = randint(0,90)/90
-                                                if vx<=0:
-                                                    vx=-(1-vy)
-                                                elif vx>=0:
-                                                    vx=(1-vy)
-                                            if x1<=Obx102 and y1<=Oby102 and y2>=Oby101 and x1>Obx102-10:
-                                                vx = randint(0,90)/90
-                                                if vy<=0:
-                                                    vy=-(1-vx)
-                                                elif vy>=0:
-                                                    vy=(1-vx)
-                                                    
+    return [vx, vy]
+
+# Wall
+colors=['red','blue','yellow','green','black','purple','orange','brown','grey','darkgreen']
+nrwalls = 10
+col=0
+for i in range(1,nrwalls+1):
+    walldirection=randint(1,2)
+    if walldirection==1:
+        globals()["Obx"+str(i)+"1"]=randint(0,x_max-50)
+        globals()["Oby"+str(i)+"1"]=randint(0,y_max)
+        globals()["Obx"+str(i)+"2"]=globals()["Obx"+str(i)+"1"]+50
+        globals()["Oby"+str(i)+"2"]=globals()["Oby"+str(i)+"1"]+randint(50,y_max-300)
+    if walldirection==2:
+        globals()["Oby"+str(i)+"1"]=randint(0,y_max-50)
+        globals()["Obx"+str(i)+"1"]=randint(0,x_max)
+        globals()["Oby"+str(i)+"2"]=globals()["Oby"+str(i)+"1"]+50
+        globals()["Obx"+str(i)+"2"]=globals()["Obx"+str(i)+"1"]+randint(50,x_max-300)
+    globals()["id"+str(i+1)]=canvas.create_rectangle(globals()["Obx"+str(i)+"1"], globals()["Oby"+str(i)+"1"], globals()["Obx"+str(i)+"2"], globals()["Oby"+str(i)+"2"], fill=colors[col])
+    col=col+1
+    print('object id: '+str(globals()['id'+str(i+1)])+', object color: '+colors[col-1])
+  
+# Move robot for 500 timesteps
+for t in range(1, 50000):
+    x1,y1,x2,y2=canvas.coords(id1)
+    vx=avoid(vx,vy)[0]
+    vy=avoid(vx,vy)[1]
     if x2 >= x_max:
         vx = -randint(0,90)/90
         if vy<=0:
@@ -328,5 +105,5 @@ for t in range(1, 50000):
     canvas.coords(id1,x1+vx,y1+vy,x2+vx,y2+vy)
     canvas.update()
     # Changes the speed((seconds from x1 to x2)/x2)
-    time.sleep(0.01)
+    time.sleep(0.001)
 window.mainloop()
