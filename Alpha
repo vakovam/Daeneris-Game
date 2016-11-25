@@ -2,6 +2,7 @@ import time
 from random import *
 # Get TKinter ready to go
 from tkinter import *
+import math
 window = Tk()
 canvas = Canvas(window, width=800, height=600, bg='white')
 canvas.pack(padx=10,pady=10)
@@ -49,58 +50,86 @@ def avoid(vx,vy):
     return [vx, vy]
 
 # Wall
-colors=['red','blue','yellow','green','black','purple','orange','brown','grey','darkgreen']
-nrwalls = 10
-col=0
+nrwalls = 7
+wallscoord=[]
 for i in range(1,nrwalls+1):
     walldirection=randint(1,2)
     if walldirection==1:
         globals()["Obx"+str(i)+"1"]=randint(0,x_max-50)
         globals()["Oby"+str(i)+"1"]=randint(0,y_max)
+        if len(wallscoord)>=1:
+            for wallx in wallscoord:
+                while math.sqrt((globals()["Obx"+str(i)+"1"]-wallx[0])**2)<70 or math.sqrt((wallx[0]-globals()["Obx"+str(i)+"1"])**2)<70:
+                    globals()["Obx"+str(i)+"1"]=randint(0,x_max-50)
         globals()["Obx"+str(i)+"2"]=globals()["Obx"+str(i)+"1"]+50
         globals()["Oby"+str(i)+"2"]=globals()["Oby"+str(i)+"1"]+randint(50,y_max-300)
     if walldirection==2:
         globals()["Oby"+str(i)+"1"]=randint(0,y_max-50)
         globals()["Obx"+str(i)+"1"]=randint(0,x_max)
+        if len(wallscoord)>=1:
+            for wally in wallscoord:
+                while math.sqrt((globals()["Oby"+str(i)+"1"]-wally[1])**2)<70 or math.sqrt((wally[1]-globals()["Oby"+str(i)+"1"])**2)<70:
+                    globals()["Oby"+str(i)+"1"]=randint(0,y_max-50)
         globals()["Oby"+str(i)+"2"]=globals()["Oby"+str(i)+"1"]+50
         globals()["Obx"+str(i)+"2"]=globals()["Obx"+str(i)+"1"]+randint(50,x_max-300)
-    globals()["id"+str(i+1)]=canvas.create_rectangle(globals()["Obx"+str(i)+"1"], globals()["Oby"+str(i)+"1"], globals()["Obx"+str(i)+"2"], globals()["Oby"+str(i)+"2"], fill=colors[col])
-    col=col+1
-    print('object id: '+str(globals()['id'+str(i+1)])+', object color: '+colors[col-1])
-  
+    wallscoord.append([globals()["Obx"+str(i)+"1"],globals()["Oby"+str(i)+"1"],globals()["Obx"+str(i)+"2"],globals()["Oby"+str(i)+"2"]])
+    globals()["id"+str(i+1)]=canvas.create_rectangle(globals()["Obx"+str(i)+"1"], globals()["Oby"+str(i)+"1"], globals()["Obx"+str(i)+"2"], globals()["Oby"+str(i)+"2"], fill='black')
+
+#Create eggs of different colours
+nreggs=4 #Change the number of eggs on the map.
+eggs=[] #List of all egg's x1,y1 as [x1,y1]
+colors=['red','yellow','green','blue'] #Egg Colors
+for e in range(1,nreggs+1):
+    for ewall in range(len(wallscoord)):
+        globals()["x"+str(e)+"1"]=randint(0,x_max-20)
+        globals()["y"+str(e)+"1"]=randint(0,y_max-35)
+        while (wallscoord[ewall])[2]>globals()["x"+str(e)+"1"]>(wallscoord[ewall])[0] and wallscoord[ewall][3]>globals()["y"+str(e)+"1"]>wallscoord[ewall][1]:
+            if len(eggs)>=1:
+                for pos in eggs:
+                    while math.sqrt((globals()["x"+str(e)+"1"]-pos[0])**2)<20 or math.sqrt((pos[0]-globals()["x"+str(e)+"1"])**2)<20:
+                        globals()["x"+str(e)+"1"]=randint(0,x_max-20)
+                    while math.sqrt((globals()["y"+str(e)+"1"]-pos[1])**2)<35 or math.sqrt((pos[1]-globals()["y"+str(e)+"1"])**2)<35:
+                        globals()["y"+str(e)+"1"]=randint(0,y_max-35)
+    globals()["x"+str(e)+"2"]=globals()["x"+str(e)+"1"]+20 ##20 is the x size of the egg.
+    globals()["y"+str(e)+"2"]=globals()["y"+str(e)+"1"]+35 ##35 is the y size of the egg.
+    eggs.append([globals()["x"+str(e)+"1"],globals()["y"+str(e)+"1"]])
+    globals()["egg"+str(e)]=canvas.create_oval(globals()["x"+str(e)+"1"],globals()["y"+str(e)+"1"],globals()["x"+str(e)+"2"],globals()["y"+str(e)+"2"], fill=colors[randint(0,3)], outline='black')
+
+robottoeggdistance={}
+
 # Move robot for 500 timesteps
 for t in range(1, 50000):
     x1,y1,x2,y2=canvas.coords(id1)
     vx=avoid(vx,vy)[0]
     vy=avoid(vx,vy)[1]
+    ##Distances from robot to every egg
+    for dist in range(len(eggs)):
+        robottoeggdistance["egg"+str(dist+1)]=round(math.sqrt((x1-((eggs[dist])[0]+10))**2+(y1-((eggs[dist])[1]+35/2))**2),2)
+    print(str(robottoeggdistance))
     if x2 >= x_max:
         vx = -randint(0,90)/90
         if vy<=0:
             vy=-(1+vx)
         elif vy>=0:
             vy=(1+vx)
-        print("max x "+str(vx)+", "+str(vy))
     if y1 <= y_min:
         vy = randint(0,90)/90
         if vx<=0:
             vx=-(1-vy)
         elif vx>=0:
             vx=(1-vy)
-        print("min y "+str(vx)+", "+str(vy))
     if y2 >= y_max:
         vy = -randint(0,90)/90
         if vx<=0:
             vx=-(1+vy)
         elif vx>=0:
             vx=(1+vy)
-        print("max y "+str(vx)+", "+str(vy))
     if x1 <= x_min:
         vx = randint(0,90)/90
         if vy<=0:
             vy=-(1-vx)
         elif vy>=0:
             vy=(1-vx)
-        print("min x "+str(vx)+", "+str(vy))
     # Move robot a fixed amount
     canvas.coords(id1,x1+vx,y1+vy,x2+vx,y2+vy)
     canvas.update()
